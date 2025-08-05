@@ -7,5 +7,6 @@
   "categoryName": "Category Name",
   "add": "Add",
   "cancel": "Cancel",
-  "delete": "Delete"
+  "delete": "Delete",
+  "categoryExists": "This category already exists."
 }

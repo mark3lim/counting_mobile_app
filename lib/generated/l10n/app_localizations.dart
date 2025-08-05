@@ -145,6 +145,12 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'삭제'**
   String get delete;
+
+  /// No description provided for @categoryExists.
+  ///
+  /// In ko, this message translates to:
+  /// **'이미 존재하는 카테고리입니다.'**
+  String get categoryExists;
 }
 
 class _AppLocalizationsDelegate

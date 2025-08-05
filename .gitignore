@@ -4,6 +4,7 @@
 pubspec.lock
 .metadata
 .idea/
+CMakeLists.txt
 
 # Miscellaneous
 *.class
@@ -18,6 +19,10 @@ pubspec.lock
 .svn/
 .swiftpm/
 migrate_working_dir/
+google-services.json
+GoogleService-Info.plist
+*.pem
+*.cer
 
 # IntelliJ related
 *.iml

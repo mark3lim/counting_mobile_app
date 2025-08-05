@@ -31,4 +31,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get delete => '삭제';
+
+  @override
+  String get categoryExists => '이미 존재하는 카테고리입니다.';
 }
