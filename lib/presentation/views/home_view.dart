@@ -30,22 +30,14 @@ class HomeView extends StatelessWidget {
             CountingCard(
               text: AppLocalizations.of(context)!.dailyCounting,
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const DailyCountingView()),
-                );
+                Navigator.pushNamed(context, DailyCountingView.routeName);
               },
             ),
             const SizedBox(height: 16),
             CountingCard(
               text: AppLocalizations.of(context)!.basicCounting,
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const BasicCountingView()),
-                );
+                Navigator.pushNamed(context, BasicCountingView.routeName);
               },
             ),
           ],

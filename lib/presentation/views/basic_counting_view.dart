@@ -9,6 +9,9 @@ class _Category {
 
   // 카테고리 객체를 생성합니다.
   _Category({required this.name, this.value = 0});
+
+  // 카운트를 1 증가시킵니다.
+  void increment() => value++;
 }
 
 class BasicCountingView extends StatefulWidget {
@@ -22,6 +25,12 @@ class BasicCountingView extends StatefulWidget {
 }
 
 class _BasicCountingViewState extends State<BasicCountingView> {
+  // 카드 여백을 상수로 정의하여 중복을 줄입니다.
+  static const _inputCardMargin = EdgeInsets.fromLTRB(16, 16, 16, 8);
+  static const _addCategoryCardMargin = EdgeInsets.fromLTRB(16, 8, 16, 8);
+  static const _categoryItemCardMargin =
+      EdgeInsets.symmetric(horizontal: 16, vertical: 4);
+
   // 카테고리 목록과 입력 상태를 관리합니다.
   final List<_Category> _categories = [];
   final TextEditingController _nameController = TextEditingController();
@@ -40,13 +49,21 @@ class _BasicCountingViewState extends State<BasicCountingView> {
   // 새 카테고리를 목록에 추가합니다.
   void _addNewCategory() {
     final name = _nameController.text.trim();
-    if (name.isNotEmpty && !_categories.any((category) => category.name == name)) {
+    if (name.isNotEmpty &&
+        !_categories.any((category) => category.name == name)) {
       setState(() {
-        _categories.insert(0, _Category(name: name, value: 0)); // 목록의 맨 위에 추가
+        _categories.insert(0, _Category(name: name));
         _isAddingCategory = false;
         _nameController.clear();
       });
     }
+  }
+
+  // 카테고리 값을 증가시킵니다.
+  void _incrementCategoryValue(_Category category) {
+    setState(() {
+      category.increment();
+    });
   }
 
   @override
@@ -65,35 +82,22 @@ class _BasicCountingViewState extends State<BasicCountingView> {
       ),
       body: ListView(
         padding: const EdgeInsets.only(bottom: 80), // FAB 공간 확보
-        children: _buildListViewItems(),
+        children: [
+          // collection-if를 사용하여 조건부로 위젯을 추가합니다.
+          if (_isAddingCategory) _buildInputCard(),
+          _buildAddCategoryButton(),
+          // collection-for를 사용하여 목록 위젯을 생성합니다.
+          for (final (index, category) in _categories.indexed)
+            _buildCategoryItem(category, index),
+        ],
       ),
     );
-  }
-
-  // ListView에 표시될 위젯 목록을 동적으로 생성합니다.
-  List<Widget> _buildListViewItems() {
-    final List<Widget> items = [];
-
-    // 1. 카테고리 추가 입력 카드를 조건부로 추가합니다.
-    if (_isAddingCategory) {
-      items.add(_buildInputCard());
-    }
-
-    // 2. "카테고리 추가" 버튼을 추가합니다.
-    items.add(_buildAddCategoryButton());
-
-    // 3. 기존 카테고리 목록을 추가합니다.
-    for (int i = 0; i < _categories.length; i++) {
-      items.add(_buildCategoryItem(_categories[i], i));
-    }
-
-    return items;
   }
 
   // 카테고리 입력을 위한 카드 위젯을 생성합니다.
   Widget _buildInputCard() {
     return Card(
-      margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      margin: _inputCardMargin,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
         child: Row(
@@ -109,6 +113,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
                   hintText: AppLocalizations.of(context)!.categoryName,
                   counterText: '', // 글자 수 카운터 숨기기
                 ),
+                onSubmitted: (_) => _addNewCategory(),
               ),
             ),
             const SizedBox(width: 12),
@@ -134,7 +139,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
   // "카테고리 추가" 버튼 위젯을 생성합니다.
   Widget _buildAddCategoryButton() {
     return Card(
-      margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      margin: _addCategoryCardMargin,
       child: ListTile(
         title: Text(AppLocalizations.of(context)!.addCategory),
         trailing: const Icon(Icons.add, color: Color(0xFF4CAF50)),
@@ -148,7 +153,8 @@ class _BasicCountingViewState extends State<BasicCountingView> {
   // 각 카테고리 항목을 위한 위젯을 생성합니다.
   Widget _buildCategoryItem(_Category category, int index) {
     return Dismissible(
-      key: Key('${category.name}_${index}_${category.hashCode}'),
+      // ObjectKey를 사용하여 더 안전한 키를 제공합니다.
+      key: ObjectKey(category),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
         setState(() {
@@ -168,13 +174,14 @@ class _BasicCountingViewState extends State<BasicCountingView> {
         child: const Icon(Icons.delete, color: Colors.white),
       ),
       child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        margin: _categoryItemCardMargin,
         child: ListTile(
           title: Text(category.name),
           trailing: Text(
             category.value.toString(),
             style: Theme.of(context).textTheme.headlineSmall,
           ),
+          onTap: () => _incrementCategoryValue(category),
         ),
       ),
     );

@@ -1,4 +1,6 @@
 import 'package:counting_app/generated/l10n/app_localizations.dart';
+import 'package:counting_app/presentation/views/basic_counting_view.dart';
+import 'package:counting_app/presentation/views/daily_counting_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:counting_app/presentation/views/home_view.dart';
@@ -41,7 +43,12 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const HomeView(),
+      initialRoute: HomeView.routeName,
+      routes: {
+        HomeView.routeName: (context) => const HomeView(),
+        BasicCountingView.routeName: (context) => const BasicCountingView(),
+        DailyCountingView.routeName: (context) => const DailyCountingView(),
+      },
     );
   }
 }
