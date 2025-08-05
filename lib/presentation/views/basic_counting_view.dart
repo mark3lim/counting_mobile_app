@@ -1,4 +1,5 @@
 import 'package:counting_app/generated/l10n/app_localizations.dart';
+import 'package:counting_app/presentation/widgets/liquid_glass_button.dart';
 import 'package:counting_app/presentation/widgets/settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -173,7 +174,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(_cardBoarderRadius),
-                  side: BorderSide(color: Theme.of(context).colorScheme.outline, width: 0.5),
+                  side: BorderSide(color: Theme.of(context).colorScheme.outline, width: 1.0),
                 ),
                 margin: EdgeInsets.zero,
                 child: Center(
@@ -200,20 +201,10 @@ class _BasicCountingViewState extends State<BasicCountingView> {
             ),
             const SizedBox(width: 12),
             // 취소 버튼
-            InkWell(
-              onTap: _toggleAddCategoryView, // 입력 UI 닫기
-              customBorder: const CircleBorder(),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFFF44336),
-                ),
-                child: const Icon(
-                  Icons.remove,
-                  color: Colors.white,
-                ),
-              ),
+            LiquidGlassButton(
+              onPressed: _toggleAddCategoryView,
+              icon: Icons.remove,
+              color: const Color(0xFFF44336),
             ),
           ],
         ),
@@ -230,7 +221,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(_cardBoarderRadius),
-          side: BorderSide(color: Theme.of(context).colorScheme.outline, width: 0.5),
+          side: BorderSide(color: Theme.of(context).colorScheme.outline, width: 1.0),
         ),
         margin: _addCategoryCardMargin,
         child: ListTile(
@@ -277,7 +268,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(_cardBoarderRadius),
-                    side: BorderSide(color: Theme.of(context).colorScheme.outline, width: 0.5),
+                    side: BorderSide(color: Theme.of(context).colorScheme.outline, width: 1.0),
                   ),
                   margin: EdgeInsets.zero,
                   child: Padding(
@@ -307,31 +298,17 @@ class _BasicCountingViewState extends State<BasicCountingView> {
               ),
               const SizedBox(width: 12),
               // 빼기 버튼
-              InkWell(
-                onTap: () => _decrementCategoryValue(category),
-                customBorder: const CircleBorder(),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFFF44336),
-                  ),
-                  child: const Icon(Icons.remove, color: Colors.white),
-                ),
+              LiquidGlassButton(
+                onPressed: () => _decrementCategoryValue(category),
+                icon: Icons.remove,
+                color: const Color(0xFFF44336),
               ),
               const SizedBox(width: 8),
               // 더하기 버튼
-              InkWell(
-                onTap: () => _incrementCategoryValue(category),
-                customBorder: const CircleBorder(),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFF4CAF50),
-                  ),
-                  child: const Icon(Icons.add, color: Colors.white),
-                ),
+              LiquidGlassButton(
+                onPressed: () => _incrementCategoryValue(category),
+                icon: Icons.add,
+                color: const Color(0xFF4CAF50),
               ),
             ],
           ),
