@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "appTitle": "Counting App",
+  "dailyCounting": "Daily Counting",
+  "basicCounting": "Basic Counting",
+  "addCategory": "Add Category",
+  "categoryName": "Category Name",
+  "add": "Add",
+  "cancel": "Cancel",
+  "delete": "Delete"
+}
