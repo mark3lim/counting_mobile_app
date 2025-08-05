@@ -1,4 +1,5 @@
 import 'package:counting_app/generated/l10n/app_localizations.dart';
+import 'package:counting_app/presentation/widgets/settings_button.dart';
 import 'package:flutter/material.dart';
 
 class DailyCountingView extends StatelessWidget {
@@ -16,6 +17,14 @@ class DailyCountingView extends StatelessWidget {
       ),
       body: const Center(
         child: Text('Daily Counting View'),
+      ),
+      floatingActionButton: SettingsButton(
+        onPressed: () {
+          // TODO: 설정 화면으로 이동하는 로직 구현
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Settings button pressed!')),
+          );
+        },
       ),
     );
   }

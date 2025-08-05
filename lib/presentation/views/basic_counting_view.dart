@@ -1,4 +1,5 @@
 import 'package:counting_app/generated/l10n/app_localizations.dart';
+import 'package:counting_app/presentation/widgets/settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -6,6 +7,7 @@ import 'package:flutter/services.dart';
 class _Category {
   String name;
   int value;
+
 
   // 카테고리 객체를 생성합니다.
   _Category({required this.name, this.value = 0});
@@ -35,8 +37,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
   // 카드 여백과 높이를 상수로 정의하여 중복을 줄입니다.
   static const _inputCardMargin = EdgeInsets.fromLTRB(16, 16, 16, 8);
   static const _addCategoryCardMargin = EdgeInsets.fromLTRB(16, 8, 16, 8);
-  static const _categoryItemCardMargin =
-      EdgeInsets.symmetric(horizontal: 14, vertical: 4);
+  static const _categoryItemCardMargin = EdgeInsets.symmetric(horizontal: 14, vertical: 4);
   static const double _kItemHeight = 72.0;
   static const _cardBoarderRadius = 30.0;
   static const _edgeInsetsHorizontal = 20.0;
@@ -145,6 +146,14 @@ class _BasicCountingViewState extends State<BasicCountingView> {
           // 2. 위젯 표시 순서 변경: "카테고리 추가" 버튼
           SliverToBoxAdapter(child: _buildAddCategoryButton()),
         ],
+      ),
+      floatingActionButton: SettingsButton(
+        onPressed: () {
+          // TODO: 설정 화면으로 이동하는 로직 구현
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Settings button pressed!')),
+          );
+        },
       ),
     );
   }
