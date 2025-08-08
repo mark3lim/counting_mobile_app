@@ -34,4 +34,19 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get categoryExists => '이미 존재하는 카테고리입니다.';
+
+  @override
+  String get nextBtn => '다음';
+
+  @override
+  String get prevBtn => '이전';
+
+  @override
+  String get detailSetting => '상세 설정';
+
+  @override
+  String get nameTitle => '이름 설정';
+
+  @override
+  String get useNegativeNum => '음수 사용';
 }

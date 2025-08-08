@@ -34,4 +34,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get categoryExists => 'This category already exists.';
+
+  @override
+  String get nextBtn => 'Next';
+
+  @override
+  String get prevBtn => 'Previous';
+
+  @override
+  String get detailSetting => 'Detail Setting';
+
+  @override
+  String get nameTitle => 'Enter Name';
+
+  @override
+  String get useNegativeNum => 'Use Negative Number';
 }

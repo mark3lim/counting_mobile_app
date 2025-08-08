@@ -20,8 +20,8 @@ class LiquidGlassButton extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        width: 48,
-        height: 48,
+        width: 42,
+        height: 42,
         decoration: BoxDecoration(
           color: color.withAlpha(240), // Opacity 1.0
           borderRadius: BorderRadius.circular(24),

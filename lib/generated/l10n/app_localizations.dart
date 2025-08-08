@@ -151,6 +151,36 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'이미 존재하는 카테고리입니다.'**
   String get categoryExists;
+
+  /// No description provided for @nextBtn.
+  ///
+  /// In ko, this message translates to:
+  /// **'다음'**
+  String get nextBtn;
+
+  /// No description provided for @prevBtn.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전'**
+  String get prevBtn;
+
+  /// No description provided for @detailSetting.
+  ///
+  /// In ko, this message translates to:
+  /// **'상세 설정'**
+  String get detailSetting;
+
+  /// No description provided for @nameTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'이름 설정'**
+  String get nameTitle;
+
+  /// No description provided for @useNegativeNum.
+  ///
+  /// In ko, this message translates to:
+  /// **'음수 사용'**
+  String get useNegativeNum;
 }
 
 class _AppLocalizationsDelegate

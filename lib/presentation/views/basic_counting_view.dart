@@ -1,28 +1,12 @@
+import 'dart:ui';
+
+import 'package:counting_app/data/model/category.dart';
 import 'package:counting_app/generated/l10n/app_localizations.dart';
+import 'package:counting_app/presentation/views/basic_counting_setting_view.dart';
+import 'package:counting_app/presentation/widgets/custom_app_bar.dart';
 import 'package:counting_app/presentation/widgets/liquid_glass_button.dart';
-import 'package:counting_app/presentation/widgets/settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-// 카테고리 데이터를 관리하기 위한 모델 클래스입니다.
-class _Category {
-  String name;
-  int value;
-
-
-  // 카테고리 객체를 생성합니다.
-  _Category({required this.name, this.value = 0});
-
-  // 카운트를 1 증가시킵니다.
-  void increment() => value++;
-
-  // 카운트를 1 감소시킵니다.
-  void decrement() {
-    if (value > 0) {
-      value--;
-    }
-  }
-}
 
 class BasicCountingView extends StatefulWidget {
   // 기본 카운팅 뷰의 라우트 이름을 정의합니다.
@@ -36,20 +20,24 @@ class BasicCountingView extends StatefulWidget {
 
 class _BasicCountingViewState extends State<BasicCountingView> {
   // 카드 여백과 높이를 상수로 정의하여 중복을 줄입니다.
-  static const _inputCardMargin = EdgeInsets.fromLTRB(16, 16, 16, 8);
-  static const _addCategoryCardMargin = EdgeInsets.fromLTRB(16, 8, 16, 8);
-  static const _categoryItemCardMargin = EdgeInsets.symmetric(horizontal: 14, vertical: 4);
+  static const _inputCardMargin = EdgeInsets.fromLTRB(16, 12, 16, 12);
+  static const _categoryItemCardMargin = EdgeInsets.symmetric(horizontal: 14, vertical: 12);
   static const double _kItemHeight = 72.0;
   static const _cardBoarderRadius = 30.0;
   static const _edgeInsetsHorizontal = 20.0;
 
   // 카테고리 목록과 입력 상태를 관리합니다.
-  final List<_Category> _categories = [];
+  final List<Category> _categories = [];
   final TextEditingController _nameController = TextEditingController();
   bool _isAddingCategory = false;
 
+  // 설정 값을 관리합니다.
+  int _initialValue = 0;
+  int _incrementStep = 1;
+
   // 카테고리 추가 입력 UI의 표시 상태를 토글합니다.
   void _toggleAddCategoryView() {
+    // 카테고리 추가 UI를 토글합니다.
     setState(() {
       _isAddingCategory = !_isAddingCategory;
       if (!_isAddingCategory) {
@@ -60,6 +48,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
 
   // 새 카테고리를 목록에 추가합니다.
   void _addNewCategory() {
+    // 새 카테고리를 추가합니다.
     final name = _nameController.text.trim();
     if (name.isEmpty) {
       return;
@@ -75,25 +64,36 @@ class _BasicCountingViewState extends State<BasicCountingView> {
     } else {
       setState(() {
         // 1. 새 카테고리를 리스트의 맨 아래에 추가합니다.
-        _categories.add(_Category(name: name));
+        _categories.add(Category(
+          name: name,
+          value: _initialValue,
+          incrementStep: _incrementStep,
+        ));
         _isAddingCategory = false;
         _nameController.clear();
       });
     }
   }
 
-  // 카테고리 값을 증가시킵니다.
-  void _incrementCategoryValue(_Category category) {
-    setState(() {
-      category.increment();
-    });
-  }
+  // 설정 화면으로 이동하고 결과를 처리합니다.
+  void _navigateToSettings() async {
+    // 설정 화면으로 이동합니다.
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => BasicCountingSettingView(categories: _categories),
+      ),
+    );
 
-  // 카테고리 값을 감소시킵니다.
-  void _decrementCategoryValue(_Category category) {
-    setState(() {
-      category.decrement();
-    });
+    if (result != null && result is Map<String, int>) {
+      setState(() {
+        _initialValue = result['initialValue']!;
+        _incrementStep = result['incrementStep']!;
+        // 모든 카테고리의 증가/감소 단위를 업데이트합니다.
+        for (var category in _categories) {
+          category.incrementStep = _incrementStep;
+        }
+      });
+    }
   }
 
   @override
@@ -107,13 +107,14 @@ class _BasicCountingViewState extends State<BasicCountingView> {
   Widget build(BuildContext context) {
     // 화면의 기본 구조를 설정합니다.
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.basicCounting),
-        titleTextStyle: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 21.0,
-          color: Theme.of(context).colorScheme.onSurface,
-        ),
+      appBar: CustomAppBar(
+        title: AppLocalizations.of(context)!.basicCounting,
+        isNextEnabled: _categories.isNotEmpty,
+        onNextPressed: () {
+          if (_categories.isNotEmpty) {
+            _navigateToSettings();
+          }
+        },
       ),
       // 등록된 카테고리를 위 아래로 움직일 수 있게 CustomScrollView와 SliverReorderableList 사용
       body: CustomScrollView(
@@ -135,7 +136,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
                 if (oldIndex < newIndex) {
                   newIndex -= 1;
                 }
-                final _Category item = _categories.removeAt(oldIndex);
+                final Category item = _categories.removeAt(oldIndex);
                 _categories.insert(newIndex, item);
               });
             },
@@ -148,19 +149,12 @@ class _BasicCountingViewState extends State<BasicCountingView> {
           SliverToBoxAdapter(child: _buildAddCategoryButton()),
         ],
       ),
-      floatingActionButton: SettingsButton(
-        onPressed: () {
-          // TODO: 설정 화면으로 이동하는 로직 구현
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Settings button pressed!')),
-          );
-        },
-      ),
     );
   }
 
   // 카테고리 입력을 위한 카드 위젯을 생성합니다.
   Widget _buildInputCard() {
+    // 카테고리 입력 카드를 빌드합니다.
     return SizedBox(
       height: _kItemHeight,
       child: Padding(
@@ -179,9 +173,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
                 margin: EdgeInsets.zero,
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: _edgeInsetsHorizontal
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: _edgeInsetsHorizontal),
                     child: TextField(
                       controller: _nameController,
                       autofocus: true,
@@ -214,29 +206,54 @@ class _BasicCountingViewState extends State<BasicCountingView> {
 
   // "카테고리 추가" 버튼 위젯을 생성합니다.
   Widget _buildAddCategoryButton() {
+    // 카테고리 추가 버튼을 빌드합니다.
+    final isEnabled = !_isAddingCategory;
     return SizedBox(
       height: _kItemHeight,
-      child: Card(
-        color: Colors.transparent,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(_cardBoarderRadius),
-          side: BorderSide(color: Theme.of(context).colorScheme.outline, width: 1.0),
-        ),
-        margin: _addCategoryCardMargin,
-        child: ListTile(
-          title: Text(AppLocalizations.of(context)!.addCategory),
-          trailing: const Icon(Icons.add, color: Color(0xFF4CAF50)),
-          onTap: _toggleAddCategoryView,
-          // 입력 창이 열려있을 때는 버튼을 비활성화한 것처럼 보이게 처리
-          enabled: !_isAddingCategory,
+      child: Padding(
+        padding: _inputCardMargin,
+        child: Card(
+          color: Colors.transparent,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(_cardBoarderRadius),
+            side: BorderSide(
+              color: isEnabled ? Theme.of(context).colorScheme.outline : Colors.grey,
+              width: 1.0,
+            ),
+          ),
+          margin: EdgeInsets.zero,
+          child: InkWell(
+            onTap: isEnabled ? _toggleAddCategoryView : null,
+            borderRadius: BorderRadius.circular(_cardBoarderRadius),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.addCategory,
+                    style: TextStyle(
+                        color: isEnabled
+                            ? Theme.of(context).textTheme.bodyLarge?.color
+                            : Colors.grey),
+                  ),
+                  const SizedBox(width: 8),
+                  Icon(
+                    Icons.add,
+                    color: isEnabled ? const Color(0xFF4CAF50) : Colors.grey,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
   // 각 카테고리 항목을 위한 위젯을 생성합니다.
-  Widget _buildCategoryItem(_Category category, int index) {
+  Widget _buildCategoryItem(Category category, int index) {
+    // 카테고리 항목을 빌드합니다.
     // ReorderableList의 아이템은 최상위에 고유한 Key를 가져야 합니다.
     return SizedBox(
       key: ValueKey(category),
@@ -251,11 +268,27 @@ class _BasicCountingViewState extends State<BasicCountingView> {
           });
         },
         background: Container(
+          // 삭제 UI를 표시하는 컨테이너입니다.
           color: Colors.red,
           alignment: Alignment.centerRight,
-          padding:
-              const EdgeInsets.symmetric(horizontal: _edgeInsetsHorizontal),
-          child: const Icon(Icons.delete, color: Colors.white),
+          padding: const EdgeInsets.symmetric(horizontal: _edgeInsetsHorizontal),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.delete,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+            ],
+          ),
         ),
         child: Padding(
           padding: _categoryItemCardMargin,
@@ -263,52 +296,42 @@ class _BasicCountingViewState extends State<BasicCountingView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: Card(
-                  color: Colors.transparent,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(_cardBoarderRadius),
-                    side: BorderSide(color: Theme.of(context).colorScheme.outline, width: 1.0),
-                  ),
-                  margin: EdgeInsets.zero,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        ReorderableDragStartListener(
-                          index: index,
-                          child: const Icon(Icons.drag_handle),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(_cardBoarderRadius),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface.withAlpha(77),
+                        borderRadius: BorderRadius.circular(_cardBoarderRadius),
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.outline,
+                          width: 1.0,
                         ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            category.name,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(18, 8, 12, 8),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                category.name,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            ),
+                            ReorderableDragStartListener(
+                              index: index,
+                              child: const Padding(
+                                padding: EdgeInsets.fromLTRB(8, 3, 8, 8),
+                                child: Icon(Icons.drag_handle),
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          category.value.toString(),
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        const SizedBox(width: 10), // 숫자 왼쪽에 간격 추가
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              // 빼기 버튼
-              LiquidGlassButton(
-                onPressed: () => _decrementCategoryValue(category),
-                icon: Icons.remove,
-                color: const Color(0xFFF44336),
-              ),
-              const SizedBox(width: 8),
-              // 더하기 버튼
-              LiquidGlassButton(
-                onPressed: () => _incrementCategoryValue(category),
-                icon: Icons.add,
-                color: const Color(0xFF4CAF50),
               ),
             ],
           ),

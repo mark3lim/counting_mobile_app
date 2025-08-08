@@ -8,5 +8,10 @@
   "add": "추가",
   "cancel": "취소",
   "delete": "삭제",
-  "categoryExists": "이미 존재하는 카테고리입니다."
+  "categoryExists": "이미 존재하는 카테고리입니다.",
+  "nextBtn": "다음",
+  "prevBtn": "이전",
+  "detailSetting":  "상세 설정",
+  "nameTitle": "이름 설정",
+  "useNegativeNum": "음수 사용"
 }
