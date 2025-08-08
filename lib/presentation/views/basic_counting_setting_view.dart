@@ -6,7 +6,7 @@ import 'package:counting_app/presentation/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-// 기본 카운팅 설정 화면을 표시하는 위젯입니다.
+// 기본 카운팅에 대한 세부 설정을 하는 화면 위젯입니다.
 class BasicCountingSettingView extends StatefulWidget {
   // 기본 카운팅 설정 뷰의 라우트 이름을 정의합니다.
   static const String routeName = '/basic_counting_setting';
@@ -27,6 +27,7 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
 
   @override
   void initState() {
+    // 위젯의 상태를 초기화합니다.
     super.initState();
     _initialValueController = TextEditingController(text: '0');
     _incrementValueController = TextEditingController(text: '1');
@@ -35,6 +36,7 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
 
   @override
   void dispose() {
+    // 컨트롤러 리소스를 해제하여 메모리 누수를 방지합니다.
     _initialValueController.dispose();
     _incrementValueController.dispose();
     _nameController.dispose();
@@ -43,7 +45,7 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
 
   @override
   Widget build(BuildContext context) {
-    // 화면의 기본 구조를 설정합니다.
+    // 화면의 기본 UI 구조를 빌드합니다.
     return Scaffold(
       appBar: CustomAppBar(
         title: AppLocalizations.of(context)!.detailSetting,
@@ -81,11 +83,12 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
     );
   }
 
-  // 이름 설정 값을 입력받는 텍스트 필드를 생성합니다.
+  // 이름 입력을 위한 텍스트 필드 위젯을 생성합니다.
   Widget _buildNameTextField({
     required TextEditingController controller,
     required String label,
   }) {
+    // 유리 효과가 적용된 컨테이너 안에 텍스트 필드를 배치합니다.
     return ClipRRect(
       borderRadius: BorderRadius.circular(20.0),
       child: BackdropFilter(
@@ -126,12 +129,13 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
     );
   }
 
-  // 토글 스위치를 생성합니다.
+  // 토글 스위치가 포함된 설정 필드 위젯을 생성합니다.
   Widget _buildToggleField({
     required String label,
     required bool value,
     required ValueChanged<bool> onChanged,
   }) {
+    // 유리 효과가 적용된 컨테이너 안에 토글 스위치를 배치합니다.
     return ClipRRect(
       borderRadius: BorderRadius.circular(20.0),
       child: BackdropFilter(

@@ -8,6 +8,7 @@ import 'package:counting_app/presentation/widgets/liquid_glass_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+// 기본 카운팅 목록을 표시하고 관리하는 화면 위젯입니다.
 class BasicCountingView extends StatefulWidget {
   // 기본 카운팅 뷰의 라우트 이름을 정의합니다.
   static const String routeName = '/basic_counting';
@@ -19,25 +20,25 @@ class BasicCountingView extends StatefulWidget {
 }
 
 class _BasicCountingViewState extends State<BasicCountingView> {
-  // 카드 여백과 높이를 상수로 정의하여 중복을 줄입니다.
+  // UI 레이아웃에 사용될 상수들을 정의합니다.
   static const _inputCardMargin = EdgeInsets.fromLTRB(16, 12, 16, 12);
   static const _categoryItemCardMargin = EdgeInsets.symmetric(horizontal: 14, vertical: 12);
   static const double _kItemHeight = 72.0;
   static const _cardBoarderRadius = 30.0;
   static const _edgeInsetsHorizontal = 20.0;
 
-  // 카테고리 목록과 입력 상태를 관리합니다.
-  final List<Category> _categories = [];
-  final TextEditingController _nameController = TextEditingController();
-  bool _isAddingCategory = false;
+  // 상태 변수들을 정의합니다.
+  final List<Category> _categories = []; // 카테고리 목록을 저장합니다.
+  final TextEditingController _nameController = TextEditingController(); // 새 카테고리 이름 입력을 위한 컨트롤러입니다.
+  bool _isAddingCategory = false; // 카테고리 추가 UI의 표시 여부를 제어합니다.
 
   // 설정 값을 관리합니다.
-  int _initialValue = 0;
-  int _incrementStep = 1;
+  int _initialValue = 0; // 카운팅 초기값입니다.
+  int _incrementStep = 1; // 카운팅 증가/감소 단계입니다.
 
   // 카테고리 추가 입력 UI의 표시 상태를 토글합니다.
   void _toggleAddCategoryView() {
-    // 카테고리 추가 UI를 토글합니다.
+    // 이 함수는 카테고리 추가 입력 필드의 가시성을 제어합니다.
     setState(() {
       _isAddingCategory = !_isAddingCategory;
       if (!_isAddingCategory) {
@@ -48,13 +49,13 @@ class _BasicCountingViewState extends State<BasicCountingView> {
 
   // 새 카테고리를 목록에 추가합니다.
   void _addNewCategory() {
-    // 새 카테고리를 추가합니다.
+    // 이 함수는 사용자가 입력한 이름으로 새 카테고리를 생성하고 목록에 추가합니다.
     final name = _nameController.text.trim();
     if (name.isEmpty) {
       return;
     }
 
-    // 동일 카테고리 알림 기능
+    // 동일한 이름의 카테고리가 이미 있는지 확인합니다.
     if (_categories.any((category) => category.name == name)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -63,7 +64,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
       );
     } else {
       setState(() {
-        // 1. 새 카테고리를 리스트의 맨 아래에 추가합니다.
+        // 새 카테고리를 목록의 맨 아래에 추가합니다.
         _categories.add(Category(
           name: name,
           value: _initialValue,
@@ -77,7 +78,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
 
   // 설정 화면으로 이동하고 결과를 처리합니다.
   void _navigateToSettings() async {
-    // 설정 화면으로 이동합니다.
+    // 이 함수는 설정 화면으로 이동하고, 반환된 설정 값으로 상태를 업데이트합니다.
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => BasicCountingSettingView(categories: _categories),
@@ -98,14 +99,14 @@ class _BasicCountingViewState extends State<BasicCountingView> {
 
   @override
   void dispose() {
-    // 위젯이 제거될 때 컨트롤러 리소스를 해제합니다.
+    // 위젯이 제거될 때 컨트롤러 리소스를 해제하여 메모리 누수를 방지합니다.
     _nameController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // 화면의 기본 구조를 설정합니다.
+    // 화면의 기본 UI 구조를 빌드합니다.
     return Scaffold(
       appBar: CustomAppBar(
         title: AppLocalizations.of(context)!.basicCounting,
@@ -116,10 +117,10 @@ class _BasicCountingViewState extends State<BasicCountingView> {
           }
         },
       ),
-      // 등록된 카테고리를 위 아래로 움직일 수 있게 CustomScrollView와 SliverReorderableList 사용
+      // CustomScrollView와 SliverReorderableList를 사용하여 스크롤 및 재정렬 가능한 목록을 구현합니다.
       body: CustomScrollView(
         slivers: [
-          // 2. 위젯 표시 순서 변경: 카테고리 목록
+          // 카테고리 목록을 표시하는 SliverReorderableList입니다.
           SliverReorderableList(
             itemCount: _categories.length,
             itemBuilder: (context, index) {
@@ -142,10 +143,10 @@ class _BasicCountingViewState extends State<BasicCountingView> {
             },
           ),
 
-          // 2. 위젯 표시 순서 변경: 입력 카드 (조건부)
+          // 카테고리 추가 입력 필드를 조건부로 표시합니다.
           if (_isAddingCategory) SliverToBoxAdapter(child: _buildInputCard()),
 
-          // 2. 위젯 표시 순서 변경: "카테고리 추가" 버튼
+          // "카테고리 추가" 버튼을 표시합니다.
           SliverToBoxAdapter(child: _buildAddCategoryButton()),
         ],
       ),
@@ -154,7 +155,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
 
   // 카테고리 입력을 위한 카드 위젯을 생성합니다.
   Widget _buildInputCard() {
-    // 카테고리 입력 카드를 빌드합니다.
+    // 이 위젯은 새 카테고리 이름을 입력받는 UI를 구성합니다.
     return SizedBox(
       height: _kItemHeight,
       child: Padding(
@@ -192,7 +193,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
               ),
             ),
             const SizedBox(width: 12),
-            // 취소 버튼
+            // 입력 필드를 닫는 취소 버튼입니다.
             LiquidGlassButton(
               onPressed: _toggleAddCategoryView,
               icon: Icons.remove,
@@ -206,7 +207,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
 
   // "카테고리 추가" 버튼 위젯을 생성합니다.
   Widget _buildAddCategoryButton() {
-    // 카테고리 추가 버튼을 빌드합니다.
+    // 이 위젯은 카테고리 추가 입력 필드를 표시하는 버튼을 구성합니다.
     final isEnabled = !_isAddingCategory;
     return SizedBox(
       height: _kItemHeight,
@@ -253,8 +254,8 @@ class _BasicCountingViewState extends State<BasicCountingView> {
 
   // 각 카테고리 항목을 위한 위젯을 생성합니다.
   Widget _buildCategoryItem(Category category, int index) {
-    // 카테고리 항목을 빌드합니다.
-    // ReorderableList의 아이템은 최상위에 고유한 Key를 가져야 합니다.
+    // 이 위젯은 목록의 각 카테고리 항목을 구성하며, 삭제 및 재정렬 기능을 포함합니다.
+    // ReorderableList의 아이템은 고유한 Key를 가져야 합니다.
     return SizedBox(
       key: ValueKey(category),
       height: _kItemHeight,
@@ -263,12 +264,12 @@ class _BasicCountingViewState extends State<BasicCountingView> {
         direction: DismissDirection.endToStart,
         onDismissed: (direction) {
           setState(() {
-            // index 대신 category 객체로 안전하게 제거
+            // 인덱스 대신 category 객체를 사용하여 안전하게 제거합니다.
             _categories.remove(category);
           });
         },
         background: Container(
-          // 삭제 UI를 표시하는 컨테이너입니다.
+          // 스와이프하여 삭제할 때 나타나는 배경 UI입니다.
           color: Colors.red,
           alignment: Alignment.centerRight,
           padding: const EdgeInsets.symmetric(horizontal: _edgeInsetsHorizontal),
