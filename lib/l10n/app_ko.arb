@@ -13,5 +13,7 @@
   "prevBtn": "이전",
   "detailSetting":  "상세 설정",
   "nameTitle": "이름 설정",
-  "useNegativeNum": "음수 사용"
+  "useNegativeNum": "음수 사용",
+  "hideToggle": "숨기기",
+  "saveBtn": "저장"
 }

@@ -2,13 +2,13 @@ import 'package:counting_app/generated/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 // 공통으로 사용될 AppBar 위젯입니다.
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppNextBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final VoidCallback? onNextPressed;
   final bool isNextEnabled;
 
   // CustomAppBar 객체를 생성합니다.
-  const CustomAppBar({
+  const CustomAppNextBar({
     super.key,
     required this.title,
     this.onNextPressed,

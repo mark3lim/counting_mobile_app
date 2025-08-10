@@ -13,5 +13,7 @@
   "prevBtn": "Previous",
   "detailSetting":  "Detail Setting",
   "nameTitle": "Enter Name",
-  "useNegativeNum": "Use Negative Number"
+  "useNegativeNum": "Use Negative Number",
+  "hideToggle": "Hide",
+  "saveBtn": "Save"
 }

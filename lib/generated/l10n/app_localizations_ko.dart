@@ -49,4 +49,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get useNegativeNum => '음수 사용';
+
+  @override
+  String get hideToggle => '숨기기';
+
+  @override
+  String get saveBtn => '저장';
 }

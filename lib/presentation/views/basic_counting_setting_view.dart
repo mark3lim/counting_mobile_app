@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:counting_app/data/model/category.dart';
 import 'package:counting_app/generated/l10n/app_localizations.dart';
-import 'package:counting_app/presentation/widgets/custom_app_bar.dart';
+import 'package:counting_app/presentation/widgets/custom_app_save_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -20,25 +20,20 @@ class BasicCountingSettingView extends StatefulWidget {
 }
 
 class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
-  late TextEditingController _initialValueController;
-  late TextEditingController _incrementValueController;
   late TextEditingController _nameController;
   bool _allowNegative = false;
+  bool _isHidden = false;
 
   @override
   void initState() {
     // 위젯의 상태를 초기화합니다.
     super.initState();
-    _initialValueController = TextEditingController(text: '0');
-    _incrementValueController = TextEditingController(text: '1');
     _nameController = TextEditingController();
   }
 
   @override
   void dispose() {
     // 컨트롤러 리소스를 해제하여 메모리 누수를 방지합니다.
-    _initialValueController.dispose();
-    _incrementValueController.dispose();
     _nameController.dispose();
     super.dispose();
   }
@@ -47,14 +42,17 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
   Widget build(BuildContext context) {
     // 화면의 기본 UI 구조를 빌드합니다.
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: CustomAppSaveBar(
         title: AppLocalizations.of(context)!.detailSetting,
-        onNextPressed: () {
+        onSavePressed: () {
+          // 저장 버튼을 누르면 현재 설정 값들을 맵으로 만들어 이전 화면으로 전달합니다.
           final settings = {
             'name': _nameController.text.trim(),
-            'initialValue': int.tryParse(_initialValueController.text) ?? 0,
-            'incrementStep': int.tryParse(_incrementValueController.text) ?? 1,
+            'categoryList': widget.categories,
+            'initialValue': 0,
+            'incrementStep': 1,
             'allowNegative': _allowNegative,
+            'isHidden': _isHidden,
           };
           Navigator.of(context).pop(settings);
         },
@@ -76,6 +74,17 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
                   _allowNegative = value;
                 });
               },
+              bottomRadius: 0.0,
+            ),
+            _buildToggleField(
+              label: AppLocalizations.of(context)!.hideToggle,
+              value: _isHidden,
+              onChanged: (value) {
+                setState(() {
+                  _isHidden = value;
+                });
+              },
+              topRadius: 0.0,
             ),
           ],
         ),
@@ -87,18 +96,19 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
   Widget _buildNameTextField({
     required TextEditingController controller,
     required String label,
+    double topRadius = 20.0,
+    double bottomRadius = 20.0,
   }) {
     // 유리 효과가 적용된 컨테이너 안에 텍스트 필드를 배치합니다.
     return ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(topRadius), bottom: Radius.circular(bottomRadius)),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
           decoration: BoxDecoration(
             color: Color(0xB2A0AFB7),
-            borderRadius: BorderRadius.circular(20.0),
-            border: null,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(topRadius), bottom: Radius.circular(bottomRadius)),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -111,11 +121,12 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
               Expanded(
                 child: TextField(
                   controller: controller,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.black),
                   decoration: const InputDecoration(
-                    hintStyle: TextStyle(color: Colors.white54),
+                    hintStyle: TextStyle(color: Colors.black54),
                     border: InputBorder.none, // TextField 테두리 제거
                   ),
+                  textAlign: TextAlign.end, // 커서 및 텍스트 오른쪽 정렬
                   keyboardType: TextInputType.text,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(24),
@@ -134,17 +145,19 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
     required String label,
     required bool value,
     required ValueChanged<bool> onChanged,
+    double topRadius = 20.0,
+    double bottomRadius = 20.0,
   }) {
     // 유리 효과가 적용된 컨테이너 안에 토글 스위치를 배치합니다.
     return ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(topRadius), bottom: Radius.circular(bottomRadius)),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
           decoration: BoxDecoration(
             color: const Color(0xB2A0AFB7),
-            borderRadius: BorderRadius.circular(20.0),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(topRadius), bottom: Radius.circular(bottomRadius)),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,

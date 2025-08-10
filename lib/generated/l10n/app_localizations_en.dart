@@ -49,4 +49,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get useNegativeNum => 'Use Negative Number';
+
+  @override
+  String get hideToggle => 'Hide';
+
+  @override
+  String get saveBtn => 'Save';
 }

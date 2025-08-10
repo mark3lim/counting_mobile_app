@@ -36,6 +36,10 @@ dependencies:
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
   glassmorphism: ^3.0.0
+  collection: ^1.19.1
+  crypto: ^3.0.6
+  intl: any
+  uuid: ^4.5.1
 
 dev_dependencies:
   flutter_test:

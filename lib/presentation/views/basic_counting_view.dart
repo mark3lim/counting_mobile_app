@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:counting_app/data/model/category.dart';
 import 'package:counting_app/generated/l10n/app_localizations.dart';
 import 'package:counting_app/presentation/views/basic_counting_setting_view.dart';
-import 'package:counting_app/presentation/widgets/custom_app_bar.dart';
+import 'package:counting_app/presentation/widgets/custom_app_next_bar.dart';
 import 'package:counting_app/presentation/widgets/liquid_glass_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,7 +34,6 @@ class _BasicCountingViewState extends State<BasicCountingView> {
 
   // 설정 값을 관리합니다.
   int _initialValue = 0; // 카운팅 초기값입니다.
-  int _incrementStep = 1; // 카운팅 증가/감소 단계입니다.
 
   // 카테고리 추가 입력 UI의 표시 상태를 토글합니다.
   void _toggleAddCategoryView() {
@@ -68,7 +67,6 @@ class _BasicCountingViewState extends State<BasicCountingView> {
         _categories.add(Category(
           name: name,
           value: _initialValue,
-          incrementStep: _incrementStep,
         ));
         _isAddingCategory = false;
         _nameController.clear();
@@ -88,10 +86,9 @@ class _BasicCountingViewState extends State<BasicCountingView> {
     if (result != null && result is Map<String, int>) {
       setState(() {
         _initialValue = result['initialValue']!;
-        _incrementStep = result['incrementStep']!;
-        // 모든 카테고리의 증가/감소 단위를 업데이트합니다.
-        for (var category in _categories) {
-          category.incrementStep = _incrementStep;
+        // 기존 카테고리 값도 동기화
+        for (final c in _categories) {
+          c.value = _initialValue;
         }
       });
     }
@@ -108,7 +105,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
   Widget build(BuildContext context) {
     // 화면의 기본 UI 구조를 빌드합니다.
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: CustomAppNextBar(
         title: AppLocalizations.of(context)!.basicCounting,
         isNextEnabled: _categories.isNotEmpty,
         onNextPressed: () {

@@ -181,6 +181,18 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'음수 사용'**
   String get useNegativeNum;
+
+  /// No description provided for @hideToggle.
+  ///
+  /// In ko, this message translates to:
+  /// **'숨기기'**
+  String get hideToggle;
+
+  /// No description provided for @saveBtn.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장'**
+  String get saveBtn;
 }
 
 class _AppLocalizationsDelegate
