@@ -193,6 +193,18 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'저장'**
   String get saveBtn;
+
+  /// No description provided for @checkDeleteTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'삭제 확인'**
+  String get checkDeleteTitle;
+
+  /// No description provided for @checkDeleteMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'항목을 정말 삭제하시겠습니까?'**
+  String get checkDeleteMessage;
 }
 
 class _AppLocalizationsDelegate

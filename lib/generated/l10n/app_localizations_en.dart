@@ -55,4 +55,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saveBtn => 'Save';
+
+  @override
+  String get checkDeleteTitle => 'Confirm Delete';
+
+  @override
+  String get checkDeleteMessage => 'will be deleted permanently.';
 }

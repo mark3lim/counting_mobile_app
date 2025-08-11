@@ -63,10 +63,11 @@ class _BasicCountingViewState extends State<BasicCountingView> {
       );
     } else {
       setState(() {
-        // 새 카테고리를 목록의 맨 아래에 추가합니다.
+        // 새 카테고리를 목록의 맨 아래에 추가하고 순서를 할당합니다.
         _categories.add(Category(
           name: name,
           value: _initialValue,
+          order: _categories.length,
         ));
         _isAddingCategory = false;
         _nameController.clear();
@@ -136,6 +137,11 @@ class _BasicCountingViewState extends State<BasicCountingView> {
                 }
                 final Category item = _categories.removeAt(oldIndex);
                 _categories.insert(newIndex, item);
+
+                // 순서가 변경되었으므로 모든 카테고리의 order 값을 업데이트합니다.
+                for (int i = 0; i < _categories.length; i++) {
+                  _categories[i].order = i;
+                }
               });
             },
           ),

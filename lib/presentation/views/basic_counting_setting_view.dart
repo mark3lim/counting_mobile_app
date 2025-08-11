@@ -1,8 +1,11 @@
 import 'dart:ui';
 
 import 'package:counting_app/data/model/category.dart';
+import 'package:counting_app/data/model/category_list.dart';
+import 'package:counting_app/data/repositories/counting_repository.dart';
 import 'package:counting_app/generated/l10n/app_localizations.dart';
 import 'package:counting_app/presentation/widgets/custom_app_save_bar.dart';
+import 'package:counting_app/presentation/views/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -21,6 +24,7 @@ class BasicCountingSettingView extends StatefulWidget {
 
 class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
   late TextEditingController _nameController;
+  late final CountingRepository _repository;
   bool _allowNegative = false;
   bool _isHidden = false;
 
@@ -29,6 +33,7 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
     // 위젯의 상태를 초기화합니다.
     super.initState();
     _nameController = TextEditingController();
+    _repository = CountingRepository();
   }
 
   @override
@@ -38,24 +43,31 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
     super.dispose();
   }
 
+  // 저장 버튼을 눌렀을 때 호출되는 함수입니다.
+  void _onSave() async {
+    final newCategoryList = CategoryList(
+      name: _nameController.text.trim(),
+      categoryList: widget.categories,
+      modifyDate: DateTime.now(),
+      useNegativeNum: _allowNegative,
+      isHidden: _isHidden,
+    );
+
+    await _repository.addCategoryList(newCategoryList);
+
+    if (mounted) {
+      // 저장 후 화면 스택을 모두 지우고 홈 화면으로 이동합니다.
+      Navigator.of(context).pushNamedAndRemoveUntil(HomeView.routeName, (route) => false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // 화면의 기본 UI 구조를 빌드합니다.
     return Scaffold(
       appBar: CustomAppSaveBar(
         title: AppLocalizations.of(context)!.detailSetting,
-        onSavePressed: () {
-          // 저장 버튼을 누르면 현재 설정 값들을 맵으로 만들어 이전 화면으로 전달합니다.
-          final settings = {
-            'name': _nameController.text.trim(),
-            'categoryList': widget.categories,
-            'initialValue': 0,
-            'incrementStep': 1,
-            'allowNegative': _allowNegative,
-            'isHidden': _isHidden,
-          };
-          Navigator.of(context).pop(settings);
-        },
+        onSavePressed: _onSave,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -107,7 +119,7 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
           decoration: BoxDecoration(
-            color: Color(0xB2A0AFB7),
+            color: const Color(0xB2A0AFB7),
             borderRadius: BorderRadius.vertical(top: Radius.circular(topRadius), bottom: Radius.circular(bottomRadius)),
           ),
           child: Row(

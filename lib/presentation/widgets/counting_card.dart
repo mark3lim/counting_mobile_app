@@ -7,10 +7,14 @@ class CountingCard extends StatefulWidget {
   // 카드를 눌렀을 때 실행될 콜백 함수입니다.
   final VoidCallback? onTap;
 
+  // 텍스트 정렬을 위한 속성입니다.
+  final TextAlign textAlign;
+
   const CountingCard({
     super.key,
     required this.text,
     this.onTap,
+    this.textAlign = TextAlign.center, // 기본값은 중앙 정렬입니다.
   });
 
   @override
@@ -68,14 +72,17 @@ class _CountingCardState extends State<CountingCard>
             elevation: 2.0,
             color: Color.lerp(cardColor, highlightColor, _controller.value),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
+              borderRadius: BorderRadius.circular(16.0),
             ),
             child: SizedBox(
-              height: 100,
-              child: Center(
+              height: 50,
+              child: Container(
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
                   widget.text,
                   style: Theme.of(context).textTheme.titleLarge,
+                  textAlign: widget.textAlign,
                 ),
               ),
             ),

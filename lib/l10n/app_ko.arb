@@ -15,5 +15,7 @@
   "nameTitle": "이름 설정",
   "useNegativeNum": "음수 사용",
   "hideToggle": "숨기기",
-  "saveBtn": "저장"
+  "saveBtn": "저장",
+  "checkDeleteTitle": "삭제 확인",
+  "checkDeleteMessage": "항목을 정말 삭제하시겠습니까?"
 }

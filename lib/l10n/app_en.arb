@@ -15,5 +15,7 @@
   "nameTitle": "Enter Name",
   "useNegativeNum": "Use Negative Number",
   "hideToggle": "Hide",
-  "saveBtn": "Save"
+  "saveBtn": "Save",
+  "checkDeleteTitle": "Confirm Delete",
+  "checkDeleteMessage": "will be deleted permanently."
 }

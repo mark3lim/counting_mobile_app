@@ -55,4 +55,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get saveBtn => '저장';
+
+  @override
+  String get checkDeleteTitle => '삭제 확인';
+
+  @override
+  String get checkDeleteMessage => '항목을 정말 삭제하시겠습니까?';
 }

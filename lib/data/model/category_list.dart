@@ -6,21 +6,48 @@ class CategoryList {
   final String id; //고유 ID
   String name; //이름
   List<Category> categoryList; //카테고리
-  List<String> categoryNameList; // 카테고리명 리스트
   DateTime modifyDate; // 생성, 수정 일자
   bool useNegativeNum; // 음수 사용 여부
   bool isHidden; // 숨김 여부
 
   CategoryList({
+    String? id,
     required this.name,
     required this.categoryList,
-    required this.categoryNameList,
     required this.modifyDate,
     this.useNegativeNum = false, // 음수 사용 여부
     this.isHidden = false, // 숨김 여부
-  }) : id = Uuid().v4();
+  }) : id = id ?? const Uuid().v4();
 
+  // JSON 맵에서 객체를 생성합니다.
+  factory CategoryList.fromJson(Map<String, dynamic> json) {
+    var categoriesFromJson = json['categoryList'] as List;
+    List<Category> categoryList = categoriesFromJson.map((i) => Category.fromJson(i)).toList();
+
+    return CategoryList(
+      id: json['id'],
+      name: json['name'],
+      categoryList: categoryList,
+      modifyDate: DateTime.parse(json['modifyDate']),
+      useNegativeNum: json['useNegativeNum'],
+      isHidden: json['isHidden'],
+    );
+  }
+
+  // 객체를 JSON 맵으로 변환합니다.
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'categoryList': categoryList.map((c) => c.toJson()).toList(),
+      'modifyDate': modifyDate.toIso8601String(),
+      'useNegativeNum': useNegativeNum,
+      'isHidden': isHidden,
+    };
+  }
+
+  // 카테고리 이름 리스트가 동일한지 확인합니다.
   bool isCategoryNameSame(List<String> nameList) {
-    return ListEquality().equals(categoryNameList, nameList);
+    return const ListEquality().equals(categoryList.map((c) => c.name).toList(), nameList);
   }
 }
