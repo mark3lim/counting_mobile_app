@@ -9,30 +9,37 @@ class CategoryList {
   DateTime modifyDate; // 생성, 수정 일자
   bool useNegativeNum; // 음수 사용 여부
   bool isHidden; // 숨김 여부
+  String categoryType; // 유형
 
   CategoryList({
     String? id,
     required this.name,
     required this.categoryList,
     required this.modifyDate,
+    required this.categoryType, // 유형
     this.useNegativeNum = false, // 음수 사용 여부
     this.isHidden = false, // 숨김 여부
   }) : id = id ?? const Uuid().v4();
 
-  // JSON 맵에서 객체를 생성합니다.
-  factory CategoryList.fromJson(Map<String, dynamic> json) {
-    var categoriesFromJson = json['categoryList'] as List;
-    List<Category> categoryList = categoriesFromJson.map((i) => Category.fromJson(i)).toList();
+// JSON 맵에서 객체를 생성합니다.
+factory CategoryList.fromJson(Map<String, dynamic> json) {
+  var categoriesFromJson = json['categoryList'] as List<dynamic>? ?? [];
+  List<Category> categoryList = categoriesFromJson
+      .map((i) => Category.fromJson(i as Map<String, dynamic>))
+      .toList();
 
-    return CategoryList(
-      id: json['id'],
-      name: json['name'],
-      categoryList: categoryList,
-      modifyDate: DateTime.parse(json['modifyDate']),
-      useNegativeNum: json['useNegativeNum'],
-      isHidden: json['isHidden'],
-    );
-  }
+  return CategoryList(
+    id: json['id'] as String?,
+    name: json['name'] as String? ?? '',
+    categoryList: categoryList,
+    modifyDate: json['modifyDate'] != null
+        ? DateTime.parse(json['modifyDate'] as String)
+        : DateTime.now(),
+    categoryType: json['categoryType'] as String? ?? '',
+    useNegativeNum: json['useNegativeNum'] as bool? ?? false,
+    isHidden: json['isHidden'] as bool? ?? false,
+  );
+}
 
   // 객체를 JSON 맵으로 변환합니다.
   Map<String, dynamic> toJson() {
@@ -41,6 +48,7 @@ class CategoryList {
       'name': name,
       'categoryList': categoryList.map((c) => c.toJson()).toList(),
       'modifyDate': modifyDate.toIso8601String(),
+      'categoryType': categoryType,
       'useNegativeNum': useNegativeNum,
       'isHidden': isHidden,
     };

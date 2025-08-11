@@ -18,6 +18,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get basicCounting => '기본 카운팅';
 
   @override
+  String get addDailyCounting => '일일 카운팅 추가';
+
+  @override
+  String get addBasicCounting => '기본 카운팅 추가';
+
+  @override
   String get addCategory => '카테고리 추가';
 
   @override
@@ -61,4 +67,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get checkDeleteMessage => '항목을 정말 삭제하시겠습니까?';
+
+  @override
+  String get nameRequired => '이름을 입력해주세요.';
+
+  @override
+  String get saveFailedMessage => '저장에 실패했습니다. 다시 시도해주세요.';
+
+  @override
+  String get deleteFailedMessage => '삭제에 실패했습니다. 다시 시도해주세요.';
 }

@@ -18,6 +18,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get basicCounting => 'Basic Counting';
 
   @override
+  String get addDailyCounting => 'Add Daily Counting';
+
+  @override
+  String get addBasicCounting => 'Add Basic Counting';
+
+  @override
   String get addCategory => 'Add Category';
 
   @override
@@ -61,4 +67,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get checkDeleteMessage => 'will be deleted permanently.';
+
+  @override
+  String get nameRequired => 'Name is required.';
+
+  @override
+  String get saveFailedMessage => 'Failed to save. Please try again.';
+
+  @override
+  String get deleteFailedMessage => 'Failed to delete. Please try again.';
 }

@@ -27,6 +27,7 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
   late final CountingRepository _repository;
   bool _allowNegative = false;
   bool _isHidden = false;
+  bool _isSaving = false;
 
   @override
   void initState() {
@@ -45,19 +46,50 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
 
   // 저장 버튼을 눌렀을 때 호출되는 함수입니다.
   void _onSave() async {
-    final newCategoryList = CategoryList(
-      name: _nameController.text.trim(),
-      categoryList: widget.categories,
-      modifyDate: DateTime.now(),
-      useNegativeNum: _allowNegative,
-      isHidden: _isHidden,
-    );
+    if (_isSaving) return; // 재진입 방지
 
-    await _repository.addCategoryList(newCategoryList);
+    final name = _nameController.text.trim();
+    if (name.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.nameRequired)),
+      );
+      return;
+    }
 
-    if (mounted) {
-      // 저장 후 화면 스택을 모두 지우고 홈 화면으로 이동합니다.
-      Navigator.of(context).pushNamedAndRemoveUntil(HomeView.routeName, (route) => false);
+    FocusScope.of(context).unfocus(); // 키보드 내리기
+
+    setState(() {
+      _isSaving = true;
+    });
+
+    try {
+      final newCategoryList = CategoryList(
+        name: name,
+        categoryList: List.unmodifiable(widget.categories),
+        modifyDate: DateTime.now(),
+        useNegativeNum: _allowNegative,
+        isHidden: _isHidden,
+        categoryType: 'basic',
+      );
+
+      await _repository.addCategoryList(newCategoryList);
+
+      if (mounted) {
+        // 저장 후 화면 스택을 모두 지우고 홈 화면으로 이동합니다.
+        Navigator.of(context).pushNamedAndRemoveUntil(HomeView.routeName, (route) => false);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.saveFailedMessage)),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSaving = false;
+        });
+      }
     }
   }
 
@@ -67,7 +99,7 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
     return Scaffold(
       appBar: CustomAppSaveBar(
         title: AppLocalizations.of(context)!.detailSetting,
-        onSavePressed: _onSave,
+        onSavePressed: _isSaving ? null : _onSave,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

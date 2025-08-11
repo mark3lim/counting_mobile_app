@@ -3,6 +3,8 @@
   "appTitle": "카운팅 앱",
   "dailyCounting": "일일 카운팅",
   "basicCounting": "기본 카운팅",
+  "addDailyCounting": "일일 카운팅 추가",
+  "addBasicCounting": "기본 카운팅 추가",
   "addCategory": "카테고리 추가",
   "categoryName": "카테고리 이름",
   "add": "추가",
@@ -17,5 +19,8 @@
   "hideToggle": "숨기기",
   "saveBtn": "저장",
   "checkDeleteTitle": "삭제 확인",
-  "checkDeleteMessage": "항목을 정말 삭제하시겠습니까?"
+  "checkDeleteMessage": "항목을 정말 삭제하시겠습니까?",
+  "nameRequired": "이름을 입력해주세요.",
+  "saveFailedMessage": "저장에 실패했습니다. 다시 시도해주세요.",
+  "deleteFailedMessage": "삭제에 실패했습니다. 다시 시도해주세요."
 }

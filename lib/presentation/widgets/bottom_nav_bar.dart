@@ -14,7 +14,11 @@ class BottomNavBar extends StatelessWidget {
     // 현재 테마의 밝기 모드를 확인합니다.
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final iconColor = Theme.of(context).iconTheme.color;
-    final localizations = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context);
+    if (localizations == null) {
+      // 기본 동작 또는 에러 처리
+      return const SizedBox.shrink();
+    }
 
     // Glassmorphic 위젯을 사용하여 liquid glass 효과를 적용합니다.
     return GlassmorphicContainer(
@@ -51,8 +55,9 @@ class BottomNavBar extends StatelessWidget {
                 iconColor: iconColor,
                 onPressed: () {
                   // 버튼의 위치를 계산하여 메뉴를 표시합니다.
-                  final RenderBox button = buttonContext.findRenderObject() as RenderBox;
-                  final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+                  final RenderBox? button = buttonContext.findRenderObject() as RenderBox?;
+                  final RenderBox? overlay = Overlay.of(context).context.findRenderObject() as RenderBox?;
+                  if (button == null || overlay == null) return;
                   // Y 오프셋을 조정하여 메뉴를 더 위로 올립니다.
                   final RelativeRect position = RelativeRect.fromRect(
                     Rect.fromPoints(
@@ -84,7 +89,9 @@ class BottomNavBar extends StatelessWidget {
                     ],
                   ).then((String? routeName) {
                     if (routeName != null) {
-                      Navigator.pushNamed(context, routeName);
+                      if (context.mounted) {
+                        Navigator.pushNamed(context, routeName);
+                      }
                     }
                   });
                 },

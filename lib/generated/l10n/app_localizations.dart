@@ -116,6 +116,18 @@ abstract class AppLocalizations {
   /// **'기본 카운팅'**
   String get basicCounting;
 
+  /// No description provided for @addDailyCounting.
+  ///
+  /// In ko, this message translates to:
+  /// **'일일 카운팅 추가'**
+  String get addDailyCounting;
+
+  /// No description provided for @addBasicCounting.
+  ///
+  /// In ko, this message translates to:
+  /// **'기본 카운팅 추가'**
+  String get addBasicCounting;
+
   /// No description provided for @addCategory.
   ///
   /// In ko, this message translates to:
@@ -205,6 +217,24 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'항목을 정말 삭제하시겠습니까?'**
   String get checkDeleteMessage;
+
+  /// No description provided for @nameRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'이름을 입력해주세요.'**
+  String get nameRequired;
+
+  /// No description provided for @saveFailedMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장에 실패했습니다. 다시 시도해주세요.'**
+  String get saveFailedMessage;
+
+  /// No description provided for @deleteFailedMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'삭제에 실패했습니다. 다시 시도해주세요.'**
+  String get deleteFailedMessage;
 }
 
 class _AppLocalizationsDelegate

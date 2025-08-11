@@ -24,7 +24,7 @@ class _SavedCountingDetailViewState extends State<SavedCountingDetailView> {
   }
 
   // 카테고리 값을 변경하고 저장소에 업데이트하는 함수입니다.
-  void _updateCategoryValue(int index, int change) {
+  Future<void> _updateCategoryValue(int index, int change) async {
     setState(() {
       final category = _currentCategoryList.categoryList[index];
       final newValue = category.value + change;
@@ -38,7 +38,17 @@ class _SavedCountingDetailViewState extends State<SavedCountingDetailView> {
       _currentCategoryList.modifyDate = DateTime.now();
     });
     // 변경된 리스트를 저장소에 즉시 저장합니다.
-    _repository.updateCategoryList(_currentCategoryList);
+    
+    try {
+      await _repository.updateCategoryList(_currentCategoryList);
+    } catch (e) {
+      // 저장 실패 시 사용자에게 알림
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('저장에 실패했습니다. 다시 시도해주세요.')),
+        );
+      }
+    }
   }
 
   @override

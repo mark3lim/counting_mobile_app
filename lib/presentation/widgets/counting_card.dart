@@ -10,11 +10,15 @@ class CountingCard extends StatefulWidget {
   // 텍스트 정렬을 위한 속성입니다.
   final TextAlign textAlign;
 
+  final IconData? icon;
+
+
   const CountingCard({
     super.key,
     required this.text,
     this.onTap,
     this.textAlign = TextAlign.center, // 기본값은 중앙 정렬입니다.
+    this.icon,
   });
 
   @override
@@ -57,7 +61,7 @@ class _CountingCardState extends State<CountingCard>
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final cardColor = Theme.of(context).cardColor;
+    final cardColor = Theme.of(context).primaryColorLight;
     final highlightColor = isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200;
 
     // 터치 이벤트를 감지하는 위젯입니다.
@@ -79,10 +83,23 @@ class _CountingCardState extends State<CountingCard>
               child: Container(
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  widget.text,
-                  style: Theme.of(context).textTheme.titleLarge,
-                  textAlign: widget.textAlign,
+                child: Row(
+                  children: [
+                    if (widget.icon != null) ...[
+                      Icon(
+                        widget.icon,
+                        size: 24.0,
+                      ),
+                      const SizedBox(width: 12.0),
+                    ],
+                    Expanded(
+                      child: Text(
+                        widget.text,
+                        style: Theme.of(context).textTheme.titleMedium,
+                        textAlign: widget.textAlign,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
