@@ -1,6 +1,7 @@
 #basic
 .gemini/
 .env
+.env*
 pubspec.lock
 .metadata
 .idea/
