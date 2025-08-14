@@ -61,7 +61,7 @@ class _CountingCardState extends State<CountingCard>
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final cardColor = Theme.of(context).primaryColorLight;
+    final cardColor = Color(0xFFD0E4FF);
     final highlightColor = isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200;
 
     // 터치 이벤트를 감지하는 위젯입니다.

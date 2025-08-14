@@ -3,7 +3,7 @@ import 'package:counting_app/data/repositories/counting_repository.dart';
 import 'package:counting_app/generated/l10n/app_localizations.dart';
 import 'package:counting_app/presentation/views/basic_counting_view.dart';
 import 'package:counting_app/presentation/views/daily_counting_view.dart';
-import 'package:counting_app/presentation/views/saved_counting_detail_view.dart';
+import 'package:counting_app/presentation/views/saved_basic_counting_detail_view.dart';
 import 'package:flutter/material.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../widgets/counting_card.dart';
@@ -27,6 +27,7 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     // 위젯이 초기화될 때 저장된 카테고리 목록을 불러옵니다.
     super.initState();
+    _repository = CountingRepository();
     _loadCategoryLists();
   }
 
@@ -45,7 +46,7 @@ class _HomeViewState extends State<HomeView> {
       if (!mounted) return;
       // 에러 처리: 스낵바나 다이얼로그로 사용자에게 알림
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('데이터를 불러오는 중 오류가 발생했습니다: $e')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.dataLoadingErrorMessage)),
       );
     }
   }
@@ -54,7 +55,7 @@ class _HomeViewState extends State<HomeView> {
   void _navigateToDetail(CategoryList categoryList) async {
     await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => SavedCountingDetailView(categoryList: categoryList),
+        builder: (context) => SavedBasicCountingDetailView(categoryList: categoryList),
       ),
     );
     // 상세 화면에서 돌아오면 목록을 다시 불러와 최신 상태를 반영합니다.
@@ -157,7 +158,7 @@ class _HomeViewState extends State<HomeView> {
                                   SnackBar(
                                     content: Text(localizations.deleteFailedMessage),
                                     action: SnackBarAction(
-                                      label: 'OK',
+                                      label: AppLocalizations.of(context)!.okayBtn,
                                       onPressed: () {},
                                     ),
                                   ),

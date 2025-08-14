@@ -1,18 +1,20 @@
 import 'package:counting_app/data/model/category_list.dart';
 import 'package:counting_app/data/repositories/counting_repository.dart';
+import 'package:counting_app/generated/l10n/app_localizations.dart';
+import 'package:counting_app/generated/l10n/app_localizations_en.dart';
 import 'package:flutter/material.dart';
 
 // 저장된 카운팅 목록의 상세 화면을 표시하는 위젯입니다.
-class SavedCountingDetailView extends StatefulWidget {
+class SavedBasicCountingDetailView extends StatefulWidget {
   final CategoryList categoryList;
 
-  const SavedCountingDetailView({super.key, required this.categoryList});
+  const SavedBasicCountingDetailView({super.key, required this.categoryList});
 
   @override
-  State<SavedCountingDetailView> createState() => _SavedCountingDetailViewState();
+  State<SavedBasicCountingDetailView> createState() => _SavedBasicCountingDetailViewState();
 }
 
-class _SavedCountingDetailViewState extends State<SavedCountingDetailView> {
+class _SavedBasicCountingDetailViewState extends State<SavedBasicCountingDetailView> {
   late CategoryList _currentCategoryList;
   final CountingRepository _repository = CountingRepository();
 
@@ -24,30 +26,43 @@ class _SavedCountingDetailViewState extends State<SavedCountingDetailView> {
   }
 
   // 카테고리 값을 변경하고 저장소에 업데이트하는 함수입니다.
+  // Prevent concurrent updates
+  bool _isUpdating = false;
+
   Future<void> _updateCategoryValue(int index, int change) async {
+    if (_isUpdating) return;                        // 중복 호출 방지
+    _isUpdating = true;
+    
+    final category = _currentCategoryList.categoryList[index];
+    final newValue = category.value + change;
+    final oldValue = category.value;
+
+    // 음수 허용 여부를 확인합니다.
+    if (!_currentCategoryList.useNegativeNum && newValue < 0) {
+      _isUpdating = false;
+      return;                                       // 음수를 허용하지 않으면 0 미만으로 내려가지 않습니다.
+    }
+
     setState(() {
-      final category = _currentCategoryList.categoryList[index];
-      final newValue = category.value + change;
-
-      // 음수 허용 여부를 확인합니다.
-      if (!_currentCategoryList.useNegativeNum && newValue < 0) {
-        return; // 음수를 허용하지 않으면 0 미만으로 내려가지 않습니다.
-      }
-
       category.value = newValue;
       _currentCategoryList.modifyDate = DateTime.now();
     });
-    // 변경된 리스트를 저장소에 즉시 저장합니다.
-    
+
     try {
       await _repository.updateCategoryList(_currentCategoryList);
     } catch (e) {
+      // 저장 실패 시 이전 값으로 롤백
+      setState(() {
+        category.value = oldValue;
+      });
       // 저장 실패 시 사용자에게 알림
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('저장에 실패했습니다. 다시 시도해주세요.')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.saveFailedMessage)),
         );
       }
+    } finally {
+      _isUpdating = false;
     }
   }
 
@@ -63,21 +78,25 @@ class _SavedCountingDetailViewState extends State<SavedCountingDetailView> {
           final category = _currentCategoryList.categoryList[index];
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            color: Color(0xFFEEEEEE),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.fromLTRB(20, 6, 8, 6),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // 카테고리 이름
                   Text(
                     category.name,
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Row(
                     children: [
                       // 감소 버튼
                       IconButton(
-                        icon: const Icon(Icons.remove_circle_outline),
+                        icon: const Icon(
+                          Icons.remove_circle_outline,
+                          color: Color(0XFFDC3545),
+                        ),
                         onPressed: () => _updateCategoryValue(index, -1),
                       ),
                       // 현재 값
@@ -87,7 +106,10 @@ class _SavedCountingDetailViewState extends State<SavedCountingDetailView> {
                       ),
                       // 증가 버튼
                       IconButton(
-                        icon: const Icon(Icons.add_circle_outline),
+                        icon: const Icon(
+                          Icons.add_circle_outline,
+                          color: Color(0xFF198754),
+                        ),
                         onPressed: () => _updateCategoryValue(index, 1),
                       ),
                     ],

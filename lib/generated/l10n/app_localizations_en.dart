@@ -33,6 +33,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get add => 'Add';
 
   @override
+  String get ok => 'Ok';
+
+  @override
   String get cancel => 'Cancel';
 
   @override
@@ -40,6 +43,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get categoryExists => 'This category already exists.';
+
+  @override
+  String get okayBtn => 'Ok';
 
   @override
   String get nextBtn => 'Next';
@@ -51,7 +57,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get detailSetting => 'Detail Setting';
 
   @override
-  String get nameTitle => 'Enter Name';
+  String get nameInputTitle => 'Name';
+
+  @override
+  String get nameInputHint => 'Enter name';
 
   @override
   String get useNegativeNum => 'Use Negative Number';
@@ -69,11 +78,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checkDeleteMessage => 'will be deleted permanently.';
 
   @override
-  String get nameRequired => 'Name is required.';
-
-  @override
   String get saveFailedMessage => 'Failed to save. Please try again.';
 
   @override
   String get deleteFailedMessage => 'Failed to delete. Please try again.';
+
+  @override
+  String get dataLoadingErrorMessage => 'An error occurred while loading data.';
 }

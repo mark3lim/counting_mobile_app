@@ -28,12 +28,23 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
   bool _allowNegative = false;
   bool _isHidden = false;
   bool _isSaving = false;
+  bool _isNameEmpty = true;
 
   @override
   void initState() {
     // 위젯의 상태를 초기화합니다.
     super.initState();
     _nameController = TextEditingController();
+    // 초기 상태를 컨트롤러의 현재 값과 동기화
+    _isNameEmpty = _nameController.text.trim().isEmpty;
+    _nameController.addListener(() {
+      final isEmpty = _nameController.text.trim().isEmpty;
+      if (_isNameEmpty != isEmpty && mounted) {
+        setState(() {
+          _isNameEmpty = isEmpty;
+        });
+      }
+    });
     _repository = CountingRepository();
   }
 
@@ -50,9 +61,6 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
 
     final name = _nameController.text.trim();
     if (name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.nameRequired)),
-      );
       return;
     }
 
@@ -99,7 +107,8 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
     return Scaffold(
       appBar: CustomAppSaveBar(
         title: AppLocalizations.of(context)!.detailSetting,
-        onSavePressed: _isSaving ? null : _onSave,
+        onSavePressed: (_isSaving || _isNameEmpty) ? null : _onSave,
+        saveButtonTextColor: _isNameEmpty ? Colors.grey.shade400 : Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -107,7 +116,8 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
           children: [
             _buildNameTextField(
               controller: _nameController,
-              label: AppLocalizations.of(context)!.nameTitle,
+              label: AppLocalizations.of(context)!.nameInputTitle,
+              hintText: AppLocalizations.of(context)!.nameInputHint,
             ),
             const SizedBox(height: 16),
             _buildToggleField(
@@ -140,6 +150,7 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
   Widget _buildNameTextField({
     required TextEditingController controller,
     required String label,
+    String hintText = '',
     double topRadius = 20.0,
     double bottomRadius = 20.0,
   }) {
@@ -166,7 +177,8 @@ class _BasicCountingSettingViewState extends State<BasicCountingSettingView> {
                 child: TextField(
                   controller: controller,
                   style: const TextStyle(color: Colors.black),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
+                    hintText: hintText,
                     hintStyle: TextStyle(color: Colors.black54),
                     border: InputBorder.none, // TextField 테두리 제거
                   ),

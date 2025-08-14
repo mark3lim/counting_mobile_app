@@ -33,6 +33,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get add => '추가';
 
   @override
+  String get ok => '확인';
+
+  @override
   String get cancel => '취소';
 
   @override
@@ -40,6 +43,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get categoryExists => '이미 존재하는 카테고리입니다.';
+
+  @override
+  String get okayBtn => '확인';
 
   @override
   String get nextBtn => '다음';
@@ -51,7 +57,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get detailSetting => '상세 설정';
 
   @override
-  String get nameTitle => '이름 설정';
+  String get nameInputTitle => '이름 설정';
+
+  @override
+  String get nameInputHint => '필수 입력';
 
   @override
   String get useNegativeNum => '음수 사용';
@@ -69,11 +78,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get checkDeleteMessage => '항목을 정말 삭제하시겠습니까?';
 
   @override
-  String get nameRequired => '이름을 입력해주세요.';
-
-  @override
   String get saveFailedMessage => '저장에 실패했습니다. 다시 시도해주세요.';
 
   @override
   String get deleteFailedMessage => '삭제에 실패했습니다. 다시 시도해주세요.';
+
+  @override
+  String get dataLoadingErrorMessage => '데이터를 불러오는 중 오류가 발생했습니다.';
 }

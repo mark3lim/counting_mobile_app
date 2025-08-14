@@ -146,6 +146,12 @@ abstract class AppLocalizations {
   /// **'추가'**
   String get add;
 
+  /// No description provided for @ok.
+  ///
+  /// In ko, this message translates to:
+  /// **'확인'**
+  String get ok;
+
   /// No description provided for @cancel.
   ///
   /// In ko, this message translates to:
@@ -163,6 +169,12 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'이미 존재하는 카테고리입니다.'**
   String get categoryExists;
+
+  /// No description provided for @okayBtn.
+  ///
+  /// In ko, this message translates to:
+  /// **'확인'**
+  String get okayBtn;
 
   /// No description provided for @nextBtn.
   ///
@@ -182,11 +194,17 @@ abstract class AppLocalizations {
   /// **'상세 설정'**
   String get detailSetting;
 
-  /// No description provided for @nameTitle.
+  /// No description provided for @nameInputTitle.
   ///
   /// In ko, this message translates to:
   /// **'이름 설정'**
-  String get nameTitle;
+  String get nameInputTitle;
+
+  /// No description provided for @nameInputHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'필수 입력'**
+  String get nameInputHint;
 
   /// No description provided for @useNegativeNum.
   ///
@@ -218,12 +236,6 @@ abstract class AppLocalizations {
   /// **'항목을 정말 삭제하시겠습니까?'**
   String get checkDeleteMessage;
 
-  /// No description provided for @nameRequired.
-  ///
-  /// In ko, this message translates to:
-  /// **'이름을 입력해주세요.'**
-  String get nameRequired;
-
   /// No description provided for @saveFailedMessage.
   ///
   /// In ko, this message translates to:
@@ -235,6 +247,12 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'삭제에 실패했습니다. 다시 시도해주세요.'**
   String get deleteFailedMessage;
+
+  /// No description provided for @dataLoadingErrorMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'데이터를 불러오는 중 오류가 발생했습니다.'**
+  String get dataLoadingErrorMessage;
 }
 
 class _AppLocalizationsDelegate
