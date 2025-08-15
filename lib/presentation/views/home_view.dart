@@ -32,6 +32,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   // 저장소에서 카테고리 목록을 비동기적으로 불러와 상태를 업데이트합니다.
+  // 카테고리 목록을 불러옵니다.
   Future<void> _loadCategoryLists() async {
     try {
       final fetched = await _repository.getAllCategoryLists();
@@ -141,6 +142,8 @@ class _HomeViewState extends State<HomeView> {
                           onDismissed: (direction) async {
                             final index = _categoryLists.indexOf(categoryList);
                             final item = _categoryLists[index];
+                            final scaffoldMessenger = ScaffoldMessenger.of(context);
+                            final loc = AppLocalizations.of(context)!;
 
                             setState(() {
                               _categoryLists.removeAt(index);
@@ -154,11 +157,11 @@ class _HomeViewState extends State<HomeView> {
                               });
 
                               if (mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
+                                scaffoldMessenger.showSnackBar(
                                   SnackBar(
-                                    content: Text(localizations.deleteFailedMessage),
+                                    content: Text(loc.deleteFailedMessage),
                                     action: SnackBarAction(
-                                      label: AppLocalizations.of(context)!.okayBtn,
+                                      label: loc.okayBtn,
                                       onPressed: () {},
                                     ),
                                   ),

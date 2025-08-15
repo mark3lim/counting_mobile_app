@@ -86,16 +86,16 @@ class _GlassIconButtonState extends State<GlassIconButton> with SingleTickerProv
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      isDarkMode ? Colors.white.withOpacity(0.2) : Colors.white.withOpacity(0.3),
-                      isDarkMode ? Colors.white.withOpacity(0.1) : Colors.white.withOpacity(0.2),
+                      isDarkMode ? const Color.fromRGBO(255, 255, 255, 0.2) : const Color.fromRGBO(255, 255, 255, 0.3),
+                      isDarkMode ? const Color.fromRGBO(255, 255, 255, 0.1) : const Color.fromRGBO(255, 255, 255, 0.2),
                     ],
                   ),
                   borderGradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Colors.white.withOpacity(0.5),
-                      Colors.white.withOpacity(0.5),
+                      const Color.fromRGBO(255, 255, 255, 0.5),
+                      const Color.fromRGBO(255, 255, 255, 0.5),
                     ],
                   ),
                 ),

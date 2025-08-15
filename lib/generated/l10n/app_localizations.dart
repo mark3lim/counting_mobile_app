@@ -107,38 +107,38 @@ abstract class AppLocalizations {
   /// No description provided for @dailyCounting.
   ///
   /// In ko, this message translates to:
-  /// **'일일 카운팅'**
+  /// **'기간 카운트'**
   String get dailyCounting;
 
   /// No description provided for @basicCounting.
   ///
   /// In ko, this message translates to:
-  /// **'기본 카운팅'**
+  /// **'일반 카운트'**
   String get basicCounting;
 
   /// No description provided for @addDailyCounting.
   ///
   /// In ko, this message translates to:
-  /// **'일일 카운팅 추가'**
+  /// **'기간 카운트 추가'**
   String get addDailyCounting;
 
   /// No description provided for @addBasicCounting.
   ///
   /// In ko, this message translates to:
-  /// **'기본 카운팅 추가'**
+  /// **'일반 카운트 추가'**
   String get addBasicCounting;
 
-  /// No description provided for @addCategory.
+  /// No description provided for @addList.
   ///
   /// In ko, this message translates to:
-  /// **'카테고리 추가'**
-  String get addCategory;
+  /// **'항목 추가'**
+  String get addList;
 
-  /// No description provided for @categoryName.
+  /// No description provided for @listName.
   ///
   /// In ko, this message translates to:
-  /// **'카테고리 이름'**
-  String get categoryName;
+  /// **'항목 이름'**
+  String get listName;
 
   /// No description provided for @add.
   ///
@@ -164,11 +164,11 @@ abstract class AppLocalizations {
   /// **'삭제'**
   String get delete;
 
-  /// No description provided for @categoryExists.
+  /// No description provided for @listExists.
   ///
   /// In ko, this message translates to:
-  /// **'이미 존재하는 카테고리입니다.'**
-  String get categoryExists;
+  /// **'이미 존재하는 항목 입니다.'**
+  String get listExists;
 
   /// No description provided for @okayBtn.
   ///
@@ -253,6 +253,30 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'데이터를 불러오는 중 오류가 발생했습니다.'**
   String get dataLoadingErrorMessage;
+
+  /// No description provided for @useAnalyzTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'통계 사용'**
+  String get useAnalyzTitle;
+
+  /// No description provided for @daily.
+  ///
+  /// In ko, this message translates to:
+  /// **'일별'**
+  String get daily;
+
+  /// No description provided for @weekly.
+  ///
+  /// In ko, this message translates to:
+  /// **'주간'**
+  String get weekly;
+
+  /// No description provided for @monthly.
+  ///
+  /// In ko, this message translates to:
+  /// **'월간'**
+  String get monthly;
 }
 
 class _AppLocalizationsDelegate

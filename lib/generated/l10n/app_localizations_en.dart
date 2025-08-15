@@ -15,7 +15,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dailyCounting => 'Daily Counting';
 
   @override
-  String get basicCounting => 'Basic Counting';
+  String get basicCounting => 'Standard Counting';
 
   @override
   String get addDailyCounting => 'Add Daily Counting';
@@ -24,10 +24,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addBasicCounting => 'Add Basic Counting';
 
   @override
-  String get addCategory => 'Add Category';
+  String get addList => 'Add List';
 
   @override
-  String get categoryName => 'Category Name';
+  String get listName => 'List Name';
 
   @override
   String get add => 'Add';
@@ -42,7 +42,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delete => 'Delete';
 
   @override
-  String get categoryExists => 'This category already exists.';
+  String get listExists => 'This list already exists.';
 
   @override
   String get okayBtn => 'Ok';
@@ -85,4 +85,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dataLoadingErrorMessage => 'An error occurred while loading data.';
+
+  @override
+  String get useAnalyzTitle => 'Use for Analyze';
+
+  @override
+  String get daily => 'Daily';
+
+  @override
+  String get weekly => 'Weekly';
+
+  @override
+  String get monthly => 'Monthly';
 }

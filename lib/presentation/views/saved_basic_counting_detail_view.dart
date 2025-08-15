@@ -1,7 +1,6 @@
 import 'package:counting_app/data/model/category_list.dart';
 import 'package:counting_app/data/repositories/counting_repository.dart';
 import 'package:counting_app/generated/l10n/app_localizations.dart';
-import 'package:counting_app/generated/l10n/app_localizations_en.dart';
 import 'package:flutter/material.dart';
 
 // 저장된 카운팅 목록의 상세 화면을 표시하는 위젯입니다.
@@ -80,7 +79,7 @@ class _SavedBasicCountingDetailViewState extends State<SavedBasicCountingDetailV
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             color: Color(0xFFEEEEEE),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 6, 8, 6),
+              padding: const EdgeInsets.fromLTRB(20, 12, 8, 12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

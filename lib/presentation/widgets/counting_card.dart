@@ -79,7 +79,7 @@ class _CountingCardState extends State<CountingCard>
               borderRadius: BorderRadius.circular(16.0),
             ),
             child: SizedBox(
-              height: 50,
+              height: 70,
               child: Container(
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -95,7 +95,10 @@ class _CountingCardState extends State<CountingCard>
                     Expanded(
                       child: Text(
                         widget.text,
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold
+                        ),
                         textAlign: widget.textAlign,
                       ),
                     ),

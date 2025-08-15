@@ -9,7 +9,9 @@ class CategoryList {
   DateTime modifyDate; // 생성, 수정 일자
   bool useNegativeNum; // 음수 사용 여부
   bool isHidden; // 숨김 여부
+  bool isForAnalyze; // for analyze
   String categoryType; // 유형
+  String cycleType; // daily, weekly, monthly
 
   CategoryList({
     String? id,
@@ -19,6 +21,9 @@ class CategoryList {
     required this.categoryType, // 유형
     this.useNegativeNum = false, // 음수 사용 여부
     this.isHidden = false, // 숨김 여부
+    this.isForAnalyze = true, // for analyze
+    this.cycleType = '',
+    
   }) : id = id ?? const Uuid().v4();
 
 // JSON 맵에서 객체를 생성합니다.
@@ -38,6 +43,8 @@ factory CategoryList.fromJson(Map<String, dynamic> json) {
     categoryType: json['categoryType'] as String? ?? '',
     useNegativeNum: json['useNegativeNum'] as bool? ?? false,
     isHidden: json['isHidden'] as bool? ?? false,
+    isForAnalyze: json['isForAnalyze'] as bool? ?? true,
+    cycleType: json['cycleType'] as String? ?? '',
   );
 }
 
@@ -51,6 +58,8 @@ factory CategoryList.fromJson(Map<String, dynamic> json) {
       'categoryType': categoryType,
       'useNegativeNum': useNegativeNum,
       'isHidden': isHidden,
+      'isForAnalyze': isForAnalyze,
+      'cycleType': cycleType,
     };
   }
 

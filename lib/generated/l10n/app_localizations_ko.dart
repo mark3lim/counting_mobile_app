@@ -12,22 +12,22 @@ class AppLocalizationsKo extends AppLocalizations {
   String get appTitle => '카운팅 앱';
 
   @override
-  String get dailyCounting => '일일 카운팅';
+  String get dailyCounting => '기간 카운트';
 
   @override
-  String get basicCounting => '기본 카운팅';
+  String get basicCounting => '일반 카운트';
 
   @override
-  String get addDailyCounting => '일일 카운팅 추가';
+  String get addDailyCounting => '기간 카운트 추가';
 
   @override
-  String get addBasicCounting => '기본 카운팅 추가';
+  String get addBasicCounting => '일반 카운트 추가';
 
   @override
-  String get addCategory => '카테고리 추가';
+  String get addList => '항목 추가';
 
   @override
-  String get categoryName => '카테고리 이름';
+  String get listName => '항목 이름';
 
   @override
   String get add => '추가';
@@ -42,7 +42,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get delete => '삭제';
 
   @override
-  String get categoryExists => '이미 존재하는 카테고리입니다.';
+  String get listExists => '이미 존재하는 항목 입니다.';
 
   @override
   String get okayBtn => '확인';
@@ -85,4 +85,16 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get dataLoadingErrorMessage => '데이터를 불러오는 중 오류가 발생했습니다.';
+
+  @override
+  String get useAnalyzTitle => '통계 사용';
+
+  @override
+  String get daily => '일별';
+
+  @override
+  String get weekly => '주간';
+
+  @override
+  String get monthly => '월간';
 }

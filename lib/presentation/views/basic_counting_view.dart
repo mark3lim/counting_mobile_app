@@ -58,7 +58,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
     if (_categories.any((category) => category.name == name)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.categoryExists),
+          content: Text(AppLocalizations.of(context)!.listExists),
         ),
       );
     } else {
@@ -185,7 +185,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
                         LengthLimitingTextInputFormatter(20),
                       ],
                       decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)!.categoryName,
+                        hintText: AppLocalizations.of(context)!.listName,
                         counterText: '', // 글자 수 카운터 숨기기
                         border: InputBorder.none,
                       ),
@@ -235,7 +235,7 @@ class _BasicCountingViewState extends State<BasicCountingView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.addCategory,
+                    AppLocalizations.of(context)!.addList,
                     style: TextStyle(
                         color: isEnabled
                             ? Theme.of(context).textTheme.bodyLarge?.color
